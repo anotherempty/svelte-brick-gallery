@@ -1,6 +1,6 @@
 {
 	"name": "svelte-brick-gallery",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "A masonry-like image gallery component for svelte",
 	"keywords": [
 		"svelte",
