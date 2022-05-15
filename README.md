@@ -1,6 +1,6 @@
 # Svelte Brick Gallery
 
-An image gallery (masonry-like) component for svelte
+A masonry-like image gallery component for svelte
 
 [See the Demo](https://anotherempty.github.io/svelte-brick-gallery/)
 
