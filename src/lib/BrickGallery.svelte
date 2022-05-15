@@ -204,6 +204,17 @@
 		flex-direction: row;
 		justify-content: center;
 	}
+	.row:first-child {
+		padding-top: 0;
+		padding-bottom: calc(var(--brick-gap) / 2);
+	}
+	.row:last-child {
+		padding-top: calc(var(--brick-gap) / 2);
+		padding-bottom: 0;
+	}
+	.row:first-child.row:last-child {
+		padding: 0;
+	}
 
 	.item {
 		box-sizing: border-box;
