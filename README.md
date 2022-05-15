@@ -102,9 +102,9 @@ Two (2) more slots are available : `loading` and `error`
   </div>
 </Gallery>
 ```
-The `loading slot` allows to add a custom loading animation for the image.<br>
+The `loading slot` allows to add a custom loading animation for each images.<br>
 The `error slot` allows to display an error message when the image has failed to load and provides a *`load`* function that can reload the image. <br>
-`let:error` is an *event* error dispatched when the image wasn't loaded properly
+`let:error` is an *event* **error** dispatched when the image wasn't loaded properly
 
 [See the REPL](https://svelte.dev/repl/32ab548ff35d4002ac2c3ea35f98812b?version=3.48.0)
 
