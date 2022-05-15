@@ -4,7 +4,7 @@ A masonry-like image gallery component for svelte
 
 [See the Demo](https://anotherempty.github.io/svelte-brick-gallery/)
 
-![Preview Image](static/preview.jpg "Preview Image")
+![Preview Image](https://github.com/anotherempty/svelte-brick-gallery/blob/main/static/preview.jpg "Preview Image")
 
 ## Installation
 
