@@ -16,6 +16,8 @@
 
 	export let gap = 20;
 
+	export let justify = 'left';
+
 	let itemsCount = images.length;
 
 	/**
@@ -143,7 +145,7 @@
 
 <div bind:this={grid} class="grid" style="--brick-gap:{gap}px;" bind:clientWidth={containerWidth}>
 	{#each rows as row, i}
-		<div class="row">
+		<div class="row {justify}">
 			{#each row as item, j}
 				{@const index = rows.slice(0, i).reduce((prev, cur) => prev + cur.length, 0) + j}
 				<div
@@ -157,13 +159,13 @@
 						on:loadedmeta={(e) => processDimensions(index, e.detail)}
 					>
 						<slot name="loading" slot="loading">
-							<span>loading</span>
+							<div class="loader" style="width:100%; height:100%;" />
 						</slot>
 						<slot name="image" slot="image" let:src {style} {index}>
 							<img {src} {style} alt={src} />
 						</slot>
 						<slot name="error" slot="error" let:src let:load let:error {src} {load} {error}>
-							<button on:click={()=>load(src)}>reload</button>
+							<button on:click={() => load(src)}>reload</button>
 						</slot>
 					</Image>
 				</div>
@@ -184,41 +186,69 @@
 	.row {
 		width: 100%;
 		box-sizing: border-box;
-		overflow: hidden;
+		overflow: visible;
 		display: flex;
-		flex-direction: row;
-		justify-content: start;
 		flex-wrap: wrap;
-		/* border: 1px solid green; */
 		padding: calc(var(--brick-gap) / 2) 0;
 	}
-	.row:first-child {
-		padding-top: 0;
-		padding-bottom: calc(var(--brick-gap) / 2);
+	.row.left {
+		flex-direction: row;
+		justify-content: start;
 	}
-	.row:last-child {
-		padding-top: calc(var(--brick-gap) / 2);
-		padding-bottom: 0;
+	.row.right {
+		flex-direction: row-reverse;
+		justify-content: end;
 	}
-	.row:first-child.row:last-child {
-		padding: 0;
+	.row.center {
+		flex-direction: row;
+		justify-content: center;
 	}
 
 	.item {
-		/* border: 1px solid red; */
 		box-sizing: border-box;
-		overflow: hidden;
+		overflow: visible;
 		padding: 0 calc(var(--brick-gap) / 2);
 	}
-	.item:first-child {
+	.row.left > .item:first-child,
+	.row.center > .item:first-child {
 		padding-left: 0;
 		padding-right: calc(var(--brick-gap) / 2);
 	}
-	.item:last-child {
+	.row.left > .item:last-child,
+	.row.center > .item:last-child {
 		padding-left: calc(var(--brick-gap) / 2);
 		padding-right: 0;
 	}
-	.item:first-child.item:last-child {
+	.row.left > .item:first-child.item:last-child,
+	.row.center > .item:first-child.item:last-child {
 		padding: 0;
+	}
+	.row.right > .item:first-child {
+		padding-left: calc(var(--brick-gap) / 2);
+		padding-right: 0;
+	}
+	.row.right > .item:last-child {
+		padding-left: 0;
+		padding-right: calc(var(--brick-gap) / 2);
+	}
+	.row.right > .item:first-child.item:last-child {
+		padding: 0;
+	}
+
+	.loader {
+		background-color: #dddddd;
+		animation: loader 3.2s ease-in-out infinite;
+	}
+
+	@keyframes loader {
+		0% {
+			opacity: 0;
+		}
+		50% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
 	}
 </style>
