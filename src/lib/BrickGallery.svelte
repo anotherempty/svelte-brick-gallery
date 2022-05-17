@@ -26,6 +26,11 @@
 	let grid;
 	let rows = [new Array(itemsCount).fill(0)];
 
+	/**
+	 * @type {number}
+	 */
+	let containerWidth = 0;
+
 	const processDimensions = (
 		/** @type {number} */ index,
 		/** @type {{ natWidth: any; natHeight: any; }} */ size
@@ -46,8 +51,6 @@
 	};
 
 	const processRows = async () => {
-		// @ts-ignore
-		const gridWidth = grid.clientWidth;
 		let start = 0;
 		let end = 0;
 		let rowWidth = 0;
@@ -66,27 +69,27 @@
 				currentWidth = scaledWidth(images[i].width, images[i].height);
 			}
 
-			if (currentWidth > gridWidth) {
-				currentWidth = gridWidth;
+			if (currentWidth > containerWidth) {
+				currentWidth = containerWidth;
 			}
 
-			if (rowWidth + currentWidth > gridWidth) {
+			if (rowWidth + currentWidth > containerWidth) {
 				// if current image doesn't fit in the current row
 				end = i;
 				// save current row to an array
 				let row = new Array(end - start);
 
 				// share remaining space among images in current row
-				let portion = (gridWidth - rowWidth) / (end - start);
+				let portion = (containerWidth - rowWidth) / (end - start);
 				for (let j = start, k = 0; j < end; j++, k++) {
 					if (images[j].width === undefined) {
 						// if image sizes aren't loaded yet, use default width
-						row[k] = round(((itemWidth + portion) * 100) / gridWidth) + '%';
+						row[k] = round(((itemWidth + portion) * 100) / containerWidth) + '%';
 					} else {
 						// otherwise use scaled width
 						row[k] =
 							round(
-								((scaledWidth(images[j].width, images[j].height) + portion) * 100) / gridWidth
+								((scaledWidth(images[j].width, images[j].height) + portion) * 100) / containerWidth
 							) + '%';
 					}
 				}
@@ -103,9 +106,9 @@
 		let row = new Array(images.length - processedItems);
 		for (let i = processedItems, j = 0; i < images.length; i++, j++) {
 			if (images[i].width === undefined) {
-				row[j] = round((itemWidth * 100) / gridWidth) + '%';
+				row[j] = round((itemWidth * 100) / containerWidth) + '%';
 			} else {
-				row[j] = round((scaledWidth(images[i].width, images[i].height) * 100) / gridWidth) + '%';
+				row[j] = round((scaledWidth(images[i].width, images[i].height) * 100) / containerWidth) + '%';
 			}
 		}
 
@@ -129,15 +132,12 @@
 		processRows();
 	}
 
-	/**
-	 * @type {number}
-	 */
-	let containerWidth;
-
 	// process rows when container is resized
 	$: if (containerWidth > 0) {
 		processRows();
 	}
+
+	$: itemHeight && processRows();
 
 	let style =
 		'display:inline-block; height:100%; width:100%; object-fit:cover; object-position:center;';
