@@ -84,13 +84,12 @@
 				for (let j = start, k = 0; j < end; j++, k++) {
 					if (images[j].width === undefined) {
 						// if image sizes aren't loaded yet, use default width
-						row[k] = round(((itemWidth + portion) * 100) / containerWidth) + '%';
+						row[k] = round(((itemWidth + portion) * 100) / containerWidth);
 					} else {
 						// otherwise use scaled width
-						row[k] =
-							round(
-								((scaledWidth(images[j].width, images[j].height) + portion) * 100) / containerWidth
-							) + '%';
+						row[k] = round(
+							((scaledWidth(images[j].width, images[j].height) + portion) * 100) / containerWidth
+						);
 					}
 				}
 				rows[rows.length] = row;
@@ -106,9 +105,9 @@
 		let row = new Array(images.length - processedItems);
 		for (let i = processedItems, j = 0; i < images.length; i++, j++) {
 			if (images[i].width === undefined) {
-				row[j] = round((itemWidth * 100) / containerWidth) + '%';
+				row[j] = round((itemWidth * 100) / containerWidth);
 			} else {
-				row[j] = round((scaledWidth(images[i].width, images[i].height) * 100) / containerWidth) + '%';
+				row[j] = round((scaledWidth(images[i].width, images[i].height) * 100) / containerWidth);
 			}
 		}
 
@@ -151,7 +150,7 @@
 				<div
 					class="item"
 					style="height:{itemHeight}px; 
-              width:{item === 0 ? itemWidth + 'px' : item};"
+              width:{item === 0 ? itemWidth + 'px' : item + '%'};"
 				>
 					<Image
 						src={images[index].src}
@@ -161,8 +160,17 @@
 						<slot name="loading" slot="loading">
 							<div class="loader" style="width:100%; height:100%;" />
 						</slot>
-						<slot name="image" slot="image" let:src {style} {index}>
-							<img {src} {style} alt={src} />
+						<slot
+							name="image"
+							slot="image"
+							let:src
+							{src}
+							{style}
+							{index}
+							displayHeight={itemHeight}
+							displayWidth={Math.floor((item * containerWidth) / 100)}
+						>
+							<img {src} {style} alt={src} title={src} />
 						</slot>
 						<slot name="error" slot="error" let:src let:load let:error {src} {load} {error}>
 							<button on:click={() => load(src)}>reload</button>
