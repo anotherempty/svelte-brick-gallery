@@ -69,14 +69,16 @@ An `image slot` is available if you want to customize the render and interaction
 </script>
 
 <Gallery {images}>
-  <div slot="image" let:index let:style style="height: 100%;">
+  <div slot="image" let:index let:style let:displayWidth let:displayHeight style="height: 100%;">
     <img src={images[index].src} {style} alt={images[index].width + 'x' + images[index].height}>
   </div>
 </Gallery>
 ```
 
-By using the **image** slot, the default style of the image is available with the `let:style` directive, which sets the image to cover the whole area using `object-fit: cover;` . <br>
-The `let:index` should be self explanatory.
+**`let:index`**: the index of an image inside the array. <br>
+**`let:style`**: the default style which sets the image to cover the whole area using `object-fit: cover;` . <br>
+**`let:displayWidth`**: the rendered width (content and padding) of the box containing the image in pixel. <br>
+**`let:displayHeight`**: the rendered height of the image in pixel. <br>
 
 [See the REPL](https://svelte.dev/repl/1ebd308fd65f48d385195f18be9543f0?version=3.48.0)
 
@@ -112,6 +114,6 @@ The `error slot` allows to display an error message when the image has failed to
 
 ## License
 
-MIT
+Distributed under the MIT License
 
 
