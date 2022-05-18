@@ -51,7 +51,7 @@ If the width and height of the images are known beforehand, include them in the 
 
 </script>
 
-<Gallery {images}>
+<Gallery {images}/>
 ```
 [See the REPL](https://svelte.dev/repl/fa9eef6cd0d44334a25d6042b34a1d3c?version=3.48.0)
 
