@@ -5,6 +5,7 @@ import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import css from "rollup-plugin-css-only";
 import sveltePreprocess from "svelte-preprocess";
+import { svelteSVG } from "rollup-plugin-svelte-svg";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -42,6 +43,11 @@ export default {
     file: "public/build/bundle.js",
   },
   plugins: [
+    svelteSVG({
+      // optional SVGO options
+      // pass empty object to enable defaults
+      svgo: {},
+    }),
     svelte({
       preprocess: sveltePreprocess({
         sourceMap: !production,
