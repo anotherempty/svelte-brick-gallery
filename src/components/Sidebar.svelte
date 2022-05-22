@@ -32,7 +32,7 @@
       >
     </h1>
     <h3 class="text-lg mt-4">Props</h3>
-    <div class="grid grid-cols-4">
+    <div class="grid grid-cols-4 text-sm items-center">
       <div>gap</div>
       <Range classes="col-span-2" min={0} max={48} step={1} bind:value={gap} />
       <input type="number" min={0} max={48} step={1} bind:value={gap} />
