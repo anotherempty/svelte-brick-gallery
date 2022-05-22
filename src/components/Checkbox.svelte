@@ -16,6 +16,9 @@
     --height: 22px;
     --radius: 50%;
   }
+  label:hover{
+    color:var(--primary);
+  }
   input[type="checkbox"] {
     appearance: none;
     margin: 0;
