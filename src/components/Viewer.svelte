@@ -14,7 +14,8 @@
   <div
     in:scale={{ duration: 250, start: 0.9 }}
     out:fade={{ duration: 275 }}
-    class="fixed h-screen w-full top-0 bg-gray-900/75 z-10 backdrop-blur-md p-10"
+    id="overlay"
+    class="fixed h-screen w-full top-0 transparent backdrop-blur-md z-10 p-10"
     on:click={() => ($viewedImg = "")}
   >
     <Image src={$viewedImg} delay={400}>
@@ -36,3 +37,18 @@
     </Image>
   </div>
 {/if}
+
+<style>
+  #overlay::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    position: absolute;
+    background-color: var(--color-1);
+    opacity: 0.6;
+    z-index: -1;
+  }
+</style>
