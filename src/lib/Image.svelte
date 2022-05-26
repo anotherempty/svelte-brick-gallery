@@ -1,7 +1,7 @@
 <svelte:options immutable />
 
 <script>
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -56,19 +56,28 @@
 		loading = loader(src);
 	};
 
+	let mounted = false;
+	
+	onMount(() => {
+		mounted = true;
+		load(src);
+	});
+
 	$: load(src);
 </script>
 
-{#await loading}
-	<slot name="loading">
-		<span>...loading</span>
-	</slot>
-{:then src}
-	<slot name="image" {src}>
-		<img {src} {alt} class={classes} {style} />
-	</slot>
-{:catch error}
-	<slot name="error" {error} {src} {load}>
-		<p>error <button on:click={()=>load(src)}>reload</button></p>
-	</slot>
-{/await}
+{#if mounted}
+	{#await loading}
+		<slot name="loading">
+			<span>...loading</span>
+		</slot>
+	{:then src}
+		<slot name="image" {src}>
+			<img {src} {alt} class={classes} {style} />
+		</slot>
+	{:catch error}
+		<slot name="error" {error} {src} {load}>
+			<p>error <button on:click={() => load(src)}>reload</button></p>
+		</slot>
+	{/await}
+{/if}
