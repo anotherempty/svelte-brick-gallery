@@ -52,11 +52,13 @@
 		return res;
 	};
 
-	const load = (/** @type {string} */ src) => {
-		loading = loader(src);
-	};
-
 	let mounted = false;
+	
+	const load = (/** @type {string} */ src) => {
+		if (mounted) {
+			loading = loader(src);
+		}
+	};
 	
 	onMount(() => {
 		mounted = true;
