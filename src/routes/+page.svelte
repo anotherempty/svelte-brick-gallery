@@ -1,3 +1,18 @@
-<h1>Welcome to your library project</h1>
-<p>Create your package using @sveltejs/package and preview/showcase your work with SvelteKit</p>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import type { ImageSrc } from '$lib/types';
+	import type { PageData } from './$types';
+	import Gallery from '$lib/BrickGallery.svelte';
+
+	export let data: PageData;
+
+	let mounted = false;
+
+	onMount(() => {
+		mounted = true;
+	});
+
+	console.log('d', data.images);
+</script>
+
+<Gallery images={data.images} justify="right"/>
