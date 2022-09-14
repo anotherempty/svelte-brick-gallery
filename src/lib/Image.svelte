@@ -1,3 +1,5 @@
+<svelte:options immutable />
+
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { debounce } from './helpers';
@@ -29,11 +31,11 @@
 	 */
 	export let delay: number = 1000;
 
-	let loading: Promise<any> | PromiseLike<undefined> | undefined;
+	let loading: Promise<string> | PromiseLike<undefined> | undefined;
 
 	const loadedImgs = new Map();
 
-	const imgLoading = debounce((imgSrc: string, resolve, reject) => {
+	const imgLoading = debounce(async (imgSrc: string, resolve, reject) => {
 		const img = new Image();
 		img.src = imgSrc;
 		const getMetadata = setInterval(() => {
@@ -50,14 +52,14 @@
 			loadedImgs.set(imgSrc, img);
 			resolve(imgSrc);
 		};
-		img.onerror = (e) => {
-			dispatch('failed', { error: e });
-			reject(e);
+		img.onerror = () => {
+			dispatch('failed', { error: 'error when loading' });
+			reject(imgSrc);
 		};
 	}, delay);
 
 	function loader(imgSrc: string) {
-		const res = new Promise((resolve, reject) => {
+		const res: Promise<string> = new Promise((resolve, reject) => {
 			if (loadedImgs.has(imgSrc)) {
 				dispatch('reloaded');
 				resolve(imgSrc);
