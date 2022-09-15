@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { ImageSrc } from '$lib/types';
 	import type { PageData } from './$types';
 	import Gallery from '$lib/BrickGallery.svelte';
 
