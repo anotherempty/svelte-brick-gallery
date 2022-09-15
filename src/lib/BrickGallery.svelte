@@ -152,7 +152,7 @@
 
 	Usage:
   ```tsx
-  <BrickGallery {images}>
+  <BrickGallery {images} {itemWidth} {itemHeight} {gap} {justify} {delay}>
 		<div slot="loading">
 			...loading
 		</div>
