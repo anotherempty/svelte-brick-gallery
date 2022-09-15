@@ -1,6 +1,28 @@
 {
-	"name": "rewrite",
-	"version": "0.0.1",
+	"name": "svelte-brick-gallery",
+	"version": "1.0.0",
+	"description": "A masonry-like image gallery component for svelte",
+	"keywords": [
+		"svelte",
+		"svelte-component",
+		"masonry",
+		"brick",
+		"image",
+		"gallery"
+	],
+	"author": {
+		"name": "anotherempty",
+		"url": "https://github.com/anotherempty"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/anotherempty/svelte-brick-gallery.git"
+	},
+	"homepage": "https://anotherempty.github.io/svelte-brick-gallery/",
+	"bugs": {
+		"url": "https://github.com/anotherempty/svelte-brick-gallery/issues"
+	},
+	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "svelte-kit sync && svelte-package",
