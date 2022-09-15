@@ -146,7 +146,19 @@
 	Brick Gallery component
 
 	Usage:
-
+  ```tsx
+  <BrickGallery {images}>
+		<div slot="loading">
+			...loading
+		</div>
+		<div slot="image" let:src let:index let:style let:displayWidth let:displayHeight style="height: 100%;">
+			<img src={src} {style}>
+		</div>
+		<div slot="error" let:load let:src>
+			<button on:click={() => load(src)}>reload</button>
+		</div>
+	</BrickGallery>
+  ```
 	
 -->
 
