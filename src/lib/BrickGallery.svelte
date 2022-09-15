@@ -185,7 +185,7 @@
 						>
 							<img {src} style={imgStyle} alt={src} title={src} />
 						</slot>
-						<slot name="error" slot="error" let:src let:load let:error {src} {load} {error}>
+						<slot name="error" slot="error" let:src let:load {src} {load}>
 							<button on:click={() => load(src)}>reload</button>
 						</slot>
 					</Image>

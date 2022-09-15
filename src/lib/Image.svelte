@@ -53,7 +53,7 @@
 			resolve(imgSrc);
 		};
 		img.onerror = () => {
-			dispatch('failed', { error: 'error when loading' });
+			dispatch('loadfail');
 			reject(imgSrc);
 		};
 	}, delay);
@@ -96,7 +96,7 @@
     <Image {src} {classes} {style} {alt} {delay}>
       <div slot="loading">loading animation</div>
       <img slot="image" let:src {src}>
-      <div slot="error" let:load let:src let:error>
+      <div slot="error" let:load let:src>
         <button on:click={() => load(src)}>reload</button>
       </div>
     </Image>
@@ -114,7 +114,7 @@
 			<img {src} {alt} class={classes} {style} />
 		</slot>
 	{:catch error}
-		<slot name="error" {error} {src} {load}>
+		<slot name="error" {src} {load}>
 			<button on:click={() => load(src)}>reload</button>
 		</slot>
 	{/await}
