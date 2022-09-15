@@ -1,72 +1,108 @@
 <svelte:options immutable />
 
-<script>
+<script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
+	import { debounce } from './helpers';
 
 	const dispatch = createEventDispatcher();
 
-	export let src = '';
-	export let classes = '';
-	export let style = '';
-	export let alt = '#';
-	export let delay = 1000;
+	/**
+	 * @param {string} src The image source to load.
+	 */
+	export let src: string = '';
 
 	/**
-	 * @type {Promise<any> | PromiseLike<undefined> | undefined}
+	 * @param {string} classes CSS classes to add to the image.
 	 */
-	let loading;
+	export let classes: string = '';
 
-	let loaded = new Map();
+	/**
+	 * @param {string} style CSS styles to add to the image.
+	 */
+	export let style: string = '';
 
-	const loader = (/** @type {string} */ imgSrc) => {
-		const res = new Promise((resolve, reject) => {
-			if (loaded.has(imgSrc)) {
+	/**
+	 * @param {string} alt The image 'alt' attribute. Default is '#'.
+	 */
+	export let alt: string = '#';
+
+	/**
+	 * @param {number} delay The loading delay to emphasize the loading animation. Default is 1000ms.
+	 */
+	export let delay: number = 1000;
+
+	let loading: Promise<string> | PromiseLike<undefined> | undefined;
+
+	const loadedImgs = new Map();
+
+	const imgLoading = debounce(async (imgSrc: string, resolve, reject) => {
+		const img = new Image();
+		img.src = imgSrc;
+		const getMetadata = setInterval(() => {
+			if (img.naturalWidth) {
+				clearInterval(getMetadata);
+				dispatch('loadedmeta', {
+					natWidth: img.naturalWidth,
+					natHeight: img.naturalHeight
+				});
+			}
+		}, 10);
+		img.onload = () => {
+			dispatch('loaded');
+			loadedImgs.set(imgSrc, img);
+			resolve(imgSrc);
+		};
+		img.onerror = () => {
+			dispatch('loadfail');
+			reject(imgSrc);
+		};
+	}, delay);
+
+	function loader(imgSrc: string) {
+		const res: Promise<string> = new Promise((resolve, reject) => {
+			if (loadedImgs.has(imgSrc)) {
 				dispatch('reloaded');
 				resolve(imgSrc);
 			} else {
-				setTimeout(() => {
-					const img = new Image();
-					img.src = imgSrc;
-					const getMetadata = setInterval(() => {
-						if (img.naturalWidth) {
-							clearInterval(getMetadata);
-							dispatch('loadedmeta', {
-								natWidth: img.naturalWidth,
-								natHeight: img.naturalHeight
-							});
-						}
-					}, 10);
-					img.onload = () => {
-						dispatch('loaded');
-						loaded.set(imgSrc, img);
-						resolve(imgSrc);
-					};
-					img.onerror = (e) => {
-						dispatch('failed', { error: e });
-						reject(e);
-					};
-				}, delay);
+				imgLoading(imgSrc, resolve, reject);
 			}
 		});
 
 		return res;
-	};
+	}
 
 	let mounted = false;
-	
-	const load = (/** @type {string} */ src) => {
-		if (mounted) {
-			loading = loader(src);
-		}
-	};
-	
+
 	onMount(() => {
 		mounted = true;
 		load(src);
 	});
 
+	function load(src: string) {
+		if (mounted) {
+			loading = loader(src);
+		}
+	}
+
 	$: load(src);
 </script>
+
+<!--
+  @component
+  Image component
+
+  Usage:
+  ```tsx
+    <Image {src} {classes} {style} {alt} {delay}>
+      <div slot="loading">loading animation</div>
+      <img slot="image" let:src {src}>
+      <div slot="error" let:load let:src>
+        <button on:click={() => load(src)}>reload</button>
+      </div>
+    </Image>
+  ```
+  
+-->
 
 {#if mounted}
 	{#await loading}
@@ -78,8 +114,8 @@
 			<img {src} {alt} class={classes} {style} />
 		</slot>
 	{:catch error}
-		<slot name="error" {error} {src} {load}>
-			<p>error <button on:click={() => load(src)}>reload</button></p>
+		<slot name="error" {src} {load}>
+			<button on:click={() => load(src)}>reload</button>
 		</slot>
 	{/await}
 {/if}
