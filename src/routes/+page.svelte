@@ -11,7 +11,6 @@
 		mounted = true;
 	});
 
-	console.log('d', data.images);
 </script>
 
 <Gallery images={data.images} justify="right"/>
