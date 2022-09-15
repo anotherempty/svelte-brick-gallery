@@ -28,6 +28,11 @@
 	 */
 	export let justify: Justify = 'left';
 
+	/**
+	 * @param {number} delay The loading delay to emphasize the loading animation. Default is 1000ms.
+	 */
+	export let delay: number = 1000;
+
 	let itemsCount = images.length;
 
 	let grid: HTMLDivElement;
@@ -181,6 +186,7 @@
 						src={images[index].src}
 						on:loaded={() => processLoad()}
 						on:loadedmeta={(e) => processDimensions(index, e.detail)}
+						{delay}
 					>
 						<slot name="loading" slot="loading">
 							<div class="{classPrefix}loader" style="width:100%; height:100%;" />
